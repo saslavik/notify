@@ -1,32 +1,55 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+  <div class="wrapper">
+    <!-- header -->
+    <header>
+      <div class="navbar">
+        <div class="container">
+          <div class="navbar-content">
+            <div class="logo">Notify</div>
+            <ul class="navbar-list">
+              <li class="navbar-item" v-for="link in links" :key="link.title">
+                <router-link
+                  class="navbar-link"
+                  :to="link.url"
+                  :title="link.title">
+                    {{ link.title }}
+                </router-link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+    <router-view></router-view>
+    <!-- footer -->
   </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+
+export default {
+  data() {
+    return {
+      links: [
+        {
+          title: 'Home',
+          url: '/',
+        },
+        {
+          title: 'Notify',
+          url: '/notify',
+        },
+      ],
+    };
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.navbar-link{
+  &.router-link-exact-active {
+    color: blue;
+  }
 }
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
 </style>

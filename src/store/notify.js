@@ -1,20 +1,18 @@
 import axios from 'axios';
 import loadMore from '../assets/js/loadMore';
+import loading from './loading';
+import error from './error';
 
 export default {
+  modules: {
+    loading,
+    error,
+  },
   state: {
-    loading: false,
-    error: null,
     messages: [],
     messagesMain: [],
   },
   mutations: {
-    loading(state, value) {
-      state.loading = value;
-    },
-    error(state, value) {
-      state.error = value;
-    },
     getMessage(state, messages) {
       state.messages = messages;
     },
@@ -27,22 +25,22 @@ export default {
   },
   actions: {
     getNotifyLazy({ commit, dispatch }) {
-      commit('loading', true);
+      commit('loading/loading', true);
       setTimeout(() => {
         dispatch('getNotify');
       }, 1800);
     },
     getNotify({ commit }) {
-      commit('loading', true);
+      commit('loading/loading', true);
       axios
         .get('https://jsonplaceholder.typicode.com/users/') // получаем массив пользователе
         .then((respomse) => {
-          commit('error', null);
+          commit('error/error', null);
           const res = respomse.data;
           const messages = [];
           const messagesMain = [];
           res.forEach((el) => {
-            // т.к. у массива нет main, фильтр по длине зипкода
+            // т.к. у массива нет main, фильтр по длине User.Adress.Zipcode
             if (el.address.zipcode.length !== 10) messagesMain.push(el);
             else messages.push(el);
           });
@@ -50,12 +48,11 @@ export default {
           commit('getMessage', messages);
           commit('getMessageMain', messagesMain);
         })
-        .catch((error) => {
-          console.log(error);
-          commit('error', 'Error: Network Error');
+        .catch(() => {
+          commit('error/error', 'Error: Network Error');
         })
         .finally(() => {
-          commit('loading', false);
+          commit('loading/loading', false);
         });
     },
     loadMessages({ commit, getters }) {
@@ -72,12 +69,6 @@ export default {
     },
     getMessageMain(state) {
       return state.messagesMain;
-    },
-    getLoading(state) {
-      return state.loading;
-    },
-    getError(state) {
-      return state.error;
     },
   },
 };

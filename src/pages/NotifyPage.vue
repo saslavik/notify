@@ -37,8 +37,7 @@
 
 <script>
 import notify from '@/components/Notify.vue';
-// import axios from 'axios';
-//
+// UI
 import preloader from '@/components/UI/Preloader.vue';
 
 export default {
@@ -51,10 +50,10 @@ export default {
       return this.$store.getters.getMessageMain;
     },
     loading() {
-      return this.$store.getters.getLoading;
+      return this.$store.getters['loading/getLoading'];
     },
     error() {
-      return this.$store.getters.getError;
+      return this.$store.getters['error/getError'];
     },
   },
   methods: {
